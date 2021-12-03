@@ -1,7 +1,6 @@
-input_file = "./data/input"
+from utils import parse_reading
 
-def parse_reading(input):
-    return int(input.rstrip())
+input_file = "./data/input"
 
 previous_reading = None
 increased=0
