@@ -1,15 +1,7 @@
-import fileinput
-import numpy as np
+from utils import import_diagnostic_matrix
 
 diagnostic_path = "./data/input"
-
-diagnostic = []
-for line in fileinput.input(diagnostic_path):
-    record = line.rstrip()
-    bits = list(map(lambda x: int(x), record))
-    diagnostic.append(bits)
-
-diagnostic = np.array(diagnostic)
+diagnostic = import_diagnostic_matrix(diagnostic_path)
 
 n_rows = diagnostic.shape[0]
 code = diagnostic.sum(axis=0)
