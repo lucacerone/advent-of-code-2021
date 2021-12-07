@@ -1,12 +1,12 @@
 from utils import (
     import_hydrothermal_lines,
-    is_straight_line,
+    is_straight_or_diagonal_line,
     make_empty_hydrothermal_map,
     populate_hydrothermal_map
 )
 
 
-hydrothermal_lines = import_hydrothermal_lines("./data/input", filter_fun=is_straight_line)
+hydrothermal_lines = import_hydrothermal_lines("./data/input", is_straight_or_diagonal_line)
 hydrothermal_map = make_empty_hydrothermal_map(hydrothermal_lines)
 populate_hydrothermal_map(hydrothermal_map, hydrothermal_lines)
 
