@@ -68,32 +68,11 @@ def add_diagonal_line(hydrothermal_map, origin, destination):
     delta_x = destination[0] - origin[0]
     delta_y = destination[1] - origin[1]
 
-    if delta_x > 0 and delta_y > 0:
-        for offset in range(delta_x+1):
-            x = origin[0] + offset
-            y = origin[1] + offset
-            hydrothermal_map[x,y] += 1
-    elif delta_x > 0 and delta_y < 0:
-        for offset in range(delta_x+1):
-            x = origin[0] + offset
-            y = origin[1] - offset
-            hydrothermal_map[x,y] += 1
-    elif delta_x < 0 and delta_y > 0:
-        for offset in range(abs(delta_x)+1):
-            x = origin[0] - offset
-            y = origin[1] + offset
-            hydrothermal_map[x,y] += 1
-    elif delta_x < 0 and delta_y < 0:
-        for offset in range(abs(delta_x)+1):
-            x = origin[0] - offset
-            y = origin[1] - offset
-            hydrothermal_map[x,y] += 1
-    else:
-        raise ValueError("One of delta_x or delta_y = 0. Not a diagonal line")
-
-    
-
-
+    for offset in range(abs(delta_x)+1):
+        x = origin[0] + np.sign(delta_x)*offset
+        y = origin[1] + np.sign(delta_y)*offset
+        hydrothermal_map[x,y] += 1
+  
 def add_line(hydrothermal_map, origin, destination):
     if is_horizontal_line(origin, destination):
         add_horizontal_line(hydrothermal_map, origin, destination)
