@@ -86,7 +86,7 @@ def decode(inputs, outputs):
 from functools import reduce
 from collections import defaultdict
 
-class DigitDecoder:
+class DisplayDecoder:
     """
     A DigitDecoder class is instantiated using the 10 inputs for a specific display.
     
@@ -127,10 +127,10 @@ class DigitDecoder:
     - the segment appearing 8 times and used by 1 maps to "c"
     - the segment appearing 8 times but not used by 1 maps to "a"
 
-    With this mapping we can decode the output to a "canonic form" (segments used in alphabetical order)
+    With this mapping we can decode the output, turn it into a "canonic form" (segments in alphabetical order)
     and get the corresponding digit from the SEGMENTS_TO_DIGIT dictionary.
-
     """
+
     def __init__(self, inputs:list[str]) -> None:
         self._inputs = inputs
         self._mapping = self._find_mapping()
