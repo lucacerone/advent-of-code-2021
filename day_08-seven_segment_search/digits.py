@@ -81,3 +81,125 @@ def decode(inputs, outputs):
     mapping = find_mapping(inputs)
     digits = [decode_digit(value,mapping) for value in outputs]
     return digits_to_integer(digits)
+
+
+from functools import reduce
+from collections import defaultdict
+
+class DigitDecoder:
+    """
+    A DigitDecoder class is instantiated using the 10 inputs for a specific display.
+    
+    The decoder finds the inverse mapping to decode the outputs using the following:
+    
+    - the numbers 1 and 4 can be identified just by looking at the number of segments making the digit
+      (as explained in the challenge description)
+    
+    - when looking at all the 10 digits, some segments can be identified just by looking at the frequency
+
+    - combining the frequency of the segments and the knowledge of digits from the number of segments they are made of, 
+      can be used to further disambiguate some of the segments
+
+    To illustrate the strategy used, consider the following diagram ("x" means the digit uses the segment, "." means the segment is not used):      
+
+            a  b  c  d  e  f  g   num-segments
+          |--------------------
+        0 | x  x  x  .  x  x  x   6
+        1 | .  .  x  .  .  x  .   2
+        2 | x  .  x  x  x  .  x   5
+        3 | x  .  x  x  .  x  x   5
+        4 | .  x  x  x  .  x  .   4
+        5 | x  x  .  x  .  x  x   5
+        6 | x  x  .  x  x  x  x   6
+        7 | x  .  x  .  .  x  .   3
+        8 | x  x  x  x  x  x  x   7
+        9 | x  x  x  x  .  x  x   6
+          |
+    freq: | 8  6  8  7  4  9  7
+
+    Using the diagram above, we can find how the different settings have been mapped with the following strategy:
+    - identify the numbers 1, 4, using number of segments (to disambiguate the mapping, 7 and 8 are not needed)
+    - the segment appearing 4 times maps to "e"
+    - the segment appearing 6 times maps to "b"
+    - the segment appearing 9 times maps to "f"
+    - the segment appearing 7 times and used by 4 maps to "d"
+    - the segment appearing 7 times and not used by 4 maps to "g"
+    - the segment appearing 8 times and used by 1 maps to "c"
+    - the segment appearing 8 times but not used by 1 maps to "a"
+
+    With this mapping we can decode the output to a "canonic form" (segments used in alphabetical order)
+    and get the corresponding digit from the SEGMENTS_TO_DIGIT dictionary.
+
+    """
+    def __init__(self, inputs:list[str]) -> None:
+        self._inputs = inputs
+        self._mapping = self._find_mapping()
+    
+    def _find_mapping(self):
+        segments_1 = self._get_segments_1()
+        segments_4 = self._get_segments_4()
+        count_to_segment_candidates = self._get_count_to_segment_candidates()
+
+        maps_to_e = self._get_singleton_element(count_to_segment_candidates[4])
+        maps_to_b = self._get_singleton_element(count_to_segment_candidates[6])
+        maps_to_f = self._get_singleton_element(count_to_segment_candidates[9])
+        maps_to_d = self._get_singleton_element(count_to_segment_candidates[7] & segments_4)
+        maps_to_g = self._get_singleton_element({c for c in count_to_segment_candidates[7] if c not in segments_4})
+        maps_to_c = self._get_singleton_element(count_to_segment_candidates[8] & segments_1)
+        maps_to_a = self._get_singleton_element({c for c in count_to_segment_candidates[8] if c not in segments_1})
+
+        return {
+            maps_to_a: "a",
+            maps_to_b: "b",
+            maps_to_c: "c",
+            maps_to_d: "d",
+            maps_to_e: "e",
+            maps_to_f: "f",
+            maps_to_g: "g"
+        }
+    
+    def __call__(self, output: list[str]) -> int:
+        powers = range(len(output)-1, -1, -1)
+        value = 0
+        for i, segments in enumerate(output):
+            value += self._to_digit(segments) * 10 ** powers[i]
+        return value
+    
+    def _to_digit(self, digit_segments):
+        segments = self._decode_to_canonic_form(digit_segments)
+        return SEGMENTS_TO_DIGIT[segments]
+    
+    def _decode_to_canonic_form(self, digit_segments):
+        decoded = ""
+        for s in digit_segments:
+            decoded += self._mapping[s]
+        return canonic_form(decoded)
+    
+    def _combine_inputs(self):
+        return reduce(lambda x,y: x+y, self._inputs)
+
+    def _get_segments_counts(self):
+        all_segments = self._combine_inputs()
+        segments_counts = defaultdict(int)
+        for s in all_segments:
+            segments_counts[s] +=1
+        return segments_counts
+    
+    def _get_count_to_segment_candidates(self):
+        segment_counts = self._get_segments_counts()
+        counts_to_candidates = defaultdict(set)
+        for s in segment_counts:
+            counts_to_candidates[segment_counts[s]].add(s)
+        return counts_to_candidates
+    
+    def _get_segments_1(self):
+        return set([i for i in self._inputs if is_1(i)][0])
+    
+    def _get_segments_4(self):
+        return set([i for i in self._inputs if is_4(i)][0])
+    
+    @staticmethod
+    def _get_singleton_element(s):
+        if len(s) != 1:
+            raise ValueError(f"Expecting a set with one element, got {s}")
+        return s.copy().pop()
