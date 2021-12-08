@@ -1,6 +1,3 @@
-def canonic_form(x):
-    return "".join(sorted(x))
-
 def import_data(path):
     data = []
     with open(path, "r") as fh:
