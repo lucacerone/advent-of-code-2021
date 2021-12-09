@@ -159,10 +159,19 @@ class DisplayDecoder:
         }
     
     def __call__(self, output: list[str]) -> int:
-        powers = range(len(output)-1, -1, -1)
+        """
+        This function returns the integer value shown in the display.
+        
+        Each element of output is converted to a digit and multiplied by the corresponding power of 10; all the values
+        obtained are summed to get the final value.
+
+        The output is a list whose first digit represents thousand, the second the hundreds and so on.
+        To ease computing the corresponding power, the output is iterated in reverse order (i.e. from units to thousands). 
+        """
+        
         value = 0
-        for i, segments in enumerate(output):
-            value += self._to_digit(segments) * 10 ** powers[i]
+        for i, segments in enumerate(output[::-1]):
+            value += self._to_digit(segments) * 10 ** i
         return value
     
     def _to_digit(self, digit_segments):
