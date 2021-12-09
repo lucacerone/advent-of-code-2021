@@ -68,3 +68,20 @@ def find_basin(current_coords, heights, basin = None):
         else:
             continue
     return basin
+
+
+def find_basin_non_recursive(low_point, heights):
+    basin = set()
+    to_visit = [low_point]
+
+    while to_visit:
+        current_coords = to_visit.pop(0)
+        current_val = heights[current_coords]
+        basin.add(current_coords)
+        adjacent_coords = get_adjacent_coordinates(heights, current_coords)
+        for adj_coords in adjacent_coords:
+            adj_val = heights[adj_coords]
+            if adj_coords not in basin and adj_val != 9 and current_val < adj_val:
+                to_visit.append(adj_coords)
+    
+    return basin
