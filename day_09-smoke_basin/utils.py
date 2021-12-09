@@ -64,7 +64,7 @@ def find_basin(current_coords, heights, basin = None):
     for acoord in adjacent_coords:
         adj_value = heights[acoord]
         if acoord not in basin and adj_value != 9 and current_value < adj_value:
-            basin.update(find_basin(acoord, heights, basin))
+            basin = find_basin(acoord, heights, basin)
         else:
             continue
     return basin

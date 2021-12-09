@@ -1,4 +1,3 @@
-import numpy as np
 import utils as u
 
 heights = u.import_data("./data/input")
