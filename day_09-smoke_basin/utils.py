@@ -53,16 +53,18 @@ def is_low_point(current, adjacent):
     return np.all(current < adjacent)
 
 
-def find_basin(low_point_coords, heights, basin = None):
+def find_basin(current_coords, heights, basin = None):
     if basin is None:
         basin = set()
-    basin.add(low_point_coords)
+    basin.add(current_coords)
 
-    adjacent_coords = get_adjacent_coordinates(heights, low_point_coords)
+    adjacent_coords = get_adjacent_coordinates(heights, current_coords)
     
+    current_value = heights[current_coords]
     for acoord in adjacent_coords:
-        if heights[acoord] == 9 or acoord in basin:
-            continue
-        else:
+        adj_value = heights[acoord]
+        if acoord not in basin and adj_value != 9 and current_value < adj_value:
             basin.update(find_basin(acoord, heights, basin))
+        else:
+            continue
     return basin
