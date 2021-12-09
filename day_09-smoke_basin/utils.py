@@ -27,7 +27,42 @@ def get_adjacent_points(heights, i, j):
         
         return np.array(adjacent)
 
+def get_adjacent_coordinates(heights, coords):
+        n_rows = heights.shape[0]
+        n_columns = heights.shape[1]
+
+        adjacent = []
+
+        i, j = coords
+        
+        if i>=1:
+            adjacent.append((i-1,j))
+        
+        if j>= 1:
+            adjacent.append((i,j-1))
+        
+        if j < n_columns -1:
+            adjacent.append((i,j+1))
+        
+        if i < n_rows -1:
+            adjacent.append((i+1,j))
+        
+        return adjacent
+
 def is_low_point(current, adjacent):
     return np.all(current < adjacent)
 
-def find_basin(i,j)
+
+def find_basin(low_point_coords, heights, basin = None):
+    if basin is None:
+        basin = set()
+    basin.add(low_point_coords)
+
+    adjacent_coords = get_adjacent_coordinates(heights, low_point_coords)
+    
+    for acoord in adjacent_coords:
+        if heights[acoord] == 9 or acoord in basin:
+            continue
+        else:
+            basin.update(find_basin(acoord, heights, basin))
+    return basin
