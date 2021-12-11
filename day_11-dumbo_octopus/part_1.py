@@ -13,15 +13,10 @@ for step in range(n_steps):
       This process continues as long as new octopuses keep having their energy level increased beyond 9. (An octopus can only flash at most once per step.)
     - Finally, any octopus that flashed during this step has its energy level set to 0, as it used all of its energy to flash.
     """
-
-    print(f"step {step+1}\n===========")
-    print(data)
-    print("")
     
     # First, the energy level of each octopus increases by 1.
     data = data + 1
 
-    print(data,"\n")
 
     # Then, any octopus with an energy level greater than 9 flashes.
     can_flash = {(x,y) for x,y in np.argwhere(data>9)}
