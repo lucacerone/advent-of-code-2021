@@ -26,20 +26,12 @@ def is_small_cave(cave):
     return cave.islower()
 
 
-def find_paths(src, connections, visited=list(), paths=list()):
-    connections = deepcopy(connections)
-    visited = deepcopy(visited)
-    paths = deepcopy(paths)
-
+def count_paths(src, connections, counter=0):
     if src == "end":
-        visited.append(src)
-        paths.append(visited)
-        return paths
+        return counter + 1
     elif not connections[src]:
-        return paths
+        return counter
     elif is_small_cave(src):
-        visited.append(src)
-
         for dst in connections[src]:
             new_connections = deepcopy(connections)
 
@@ -47,12 +39,30 @@ def find_paths(src, connections, visited=list(), paths=list()):
             # therefore, I remove it as a candidate from the various connections            
             for k in connections[src]:
                 new_connections[k] = new_connections[k].difference({src})
-            
-            paths = find_paths(dst, new_connections, visited, paths)
+            counter = count_paths(dst, new_connections, counter)
     else:
-        visited.append(src)
-
         for dst in connections[src]:
-            paths = find_paths(dst, connections, visited, paths)
-    return paths
+            counter = count_paths(dst, connections, counter)
+    return counter
+
+
+def count_paths2(src, connections, visited=list(), counter=0):
+    visited = deepcopy(visited)
+    visited.append(src)
+    
+    if src == "end":
+        return counter + 1
+    elif not connections[src]:
+        return counter
+    elif is_small_cave(src):
+        for dst in connections[src]:
+            new_connections = deepcopy(connections)
+        
+            for k in connections[src]:
+                new_connections[k] = new_connections[k].difference({src})
+            counter = count_paths(dst, new_connections, visited, counter)
+    else:
+        for dst in connections[src]:
+            counter = count_paths(dst, connections, visited, counter)
+    return counter
 
