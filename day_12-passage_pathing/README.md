@@ -155,7 +155,19 @@ Although it hasn't changed, you can still get your puzzle input.
 
 You can also [Shareon Twitter Mastodon] this puzzle.
 
--- ### I couldn't solve it on the day of the challenge..
+**I couldn't solve part 2 on the day of the challenge.**
 
 Solutions I liked: 
+
+Hyper-neutrino: 
+- [part1](https://github.com/hyper-neutrino/advent-of-code/blob/main/2021/day12p2.py) 
+- [part2](https://github.com/hyper-neutrino/advent-of-code/blob/main/2021/day12p2.py)
+
+Anthony Sottile:
+
 https://www.youtube.com/watch?v=dlPoe04FoQk&t=9s
+
+Jonathan Paulson:
+https://github.com/jonathanpaulson/AdventOfCode/blob/master/2021/12.py
+
+
