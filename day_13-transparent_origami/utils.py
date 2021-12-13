@@ -88,7 +88,7 @@ def apply_instruction(instruction, matrix):
 
 
 def diagram_to_string(diagram):
-    X = [["#" if v else " " for v in y] for y in diagram]
+    X = [[u"\u2588" if v else " " for v in y] for y in diagram]
     return reduce(lambda x,y: x+"\n"+y, map(lambda x: "".join(x), X))
 
 def print_diagram(diagram):
