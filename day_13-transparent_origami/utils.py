@@ -87,9 +87,9 @@ def apply_instruction(instruction, matrix):
         raise ValueError(f"Unknown instruction '{inst_type}'")
 
 
-def diagram_to_string(diagram):
-    X = [[u"\u2588" if v else " " for v in y] for y in diagram]
+def diagram_to_string(diagram, block_char = "\u2588"):
+    X = [[block_char if v else " " for v in y] for y in diagram]
     return reduce(lambda x,y: x+"\n"+y, map(lambda x: "".join(x), X))
 
-def print_diagram(diagram):
-    print(diagram_to_string(diagram))
+def print_diagram(diagram, block_char = "\u2588"):
+    print(diagram_to_string(diagram, block_char))
