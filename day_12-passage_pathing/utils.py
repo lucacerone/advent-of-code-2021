@@ -1,5 +1,5 @@
 import fileinput
-from collections import defaultdict
+from collections import defaultdict, Counter
 from copy import deepcopy
 
 def import_graph(path):
@@ -45,24 +45,35 @@ def count_paths(src, connections, counter=0):
             counter = count_paths(dst, connections, counter)
     return counter
 
+def has_two_small_caves_visited(visited):
+    return any(map(lambda x: x >= 2, Counter([v for v in visited if v not in ["stat","end"] and is_small_cave(v)]).values()))
 
 def count_paths2(src, connections, visited=list(), counter=0):
     visited = deepcopy(visited)
     visited.append(src)
-    
+
+    two_small_cave_visited = has_two_small_caves_visited(visited)
     if src == "end":
+        print(two_small_cave_visited, "-->", visited)
         return counter + 1
     elif not connections[src]:
         return counter
     elif is_small_cave(src):
         for dst in connections[src]:
             new_connections = deepcopy(connections)
-        
-            for k in connections[src]:
-                new_connections[k] = new_connections[k].difference({src})
-            counter = count_paths(dst, new_connections, visited, counter)
+
+            if two_small_cave_visited:
+                for k in connections[src]:
+                    new_connections[k] = new_connections[k].difference({src})
+            counter = count_paths2(dst, new_connections, visited, counter)
     else:
         for dst in connections[src]:
-            counter = count_paths(dst, connections, visited, counter)
+            new_connections = deepcopy(connections)
+
+            if two_small_cave_visited:
+                for k in connections[src]:
+                    new_connections[k] = new_connections[k].difference({src})
+
+            counter = count_paths2(dst, new_connections, visited, counter)
     return counter
 
