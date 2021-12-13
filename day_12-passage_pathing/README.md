@@ -157,3 +157,5 @@ You can also [Shareon Twitter Mastodon] this puzzle.
 
 -- ### I couldn't solve it on the day of the challenge..
 
+Solutions I liked: 
+https://www.youtube.com/watch?v=dlPoe04FoQk&t=9s
