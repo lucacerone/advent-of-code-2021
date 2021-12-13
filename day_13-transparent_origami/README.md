@@ -1,4 +1,4 @@
-# Day 13: The Treachery of Whales
+# Day 13: Transparent Origami
 
 Challenge: https://adventofcode.com/2021/day/13
 
