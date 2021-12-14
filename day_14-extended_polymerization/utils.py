@@ -30,11 +30,10 @@ def count_bigrams(template):
         counter[bigram] = counter.get(bigram,0) + 1
     return counter
 
-def make_polymers_rules(insertions):
+def make_bigram_to_new_polymer_mapping(insertions):
     rules = dict()
     for bigram, polymer in insertions:
-        rule = (polymer, 1)
-        rules[bigram] = rule
+        rules[bigram] = polymer
     return rules
 
 def make_bigrams_rules(insertions):
@@ -52,11 +51,13 @@ def make_bigrams_rules(insertions):
 
     return rules
 
-def update_polymers_count(polymers, bigrams, polymers_rules):
+def update_polymers_count(polymers, bigrams, bigram_to_new_polymer):
     polymers = polymers.copy()
     for b, nb in bigrams.items():
-        p, val = polymers_rules[b]
-        polymers[p] = polymers.get(p,0) + nb*val
+        # Each bigram "b" generates a new polymer of type "p=bigram_to_new_polymer[b]",
+        # so we update the count of the polymer "p" by adding to it the number of bigrams "b"
+        p = bigram_to_new_polymer[b]
+        polymers[p] = polymers.get(p,0) + nb
     return polymers
 
 def update_bigrams_count(bigrams, bigrams_rules):
