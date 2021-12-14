@@ -52,14 +52,14 @@ def make_bigrams_rules(insertions):
 
     return rules
 
-def apply_polymers_rules(polymers, bigrams, polymers_rules):
+def update_polymers_count(polymers, bigrams, polymers_rules):
     polymers = polymers.copy()
     for b, nb in bigrams.items():
         p, val = polymers_rules[b]
         polymers[p] = polymers.get(p,0) + nb*val
     return polymers
 
-def apply_bigrams_rules(bigrams, bigrams_rules):
+def update_bigrams_count(bigrams, bigrams_rules):
     bigrams = bigrams.copy()
     current_bigrams = list(bigrams.items())
     for b, nb in current_bigrams:

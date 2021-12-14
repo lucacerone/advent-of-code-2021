@@ -4,8 +4,8 @@ from utils import (
     make_bigrams_rules,
     count_polymers,
     count_bigrams,
-    apply_polymers_rules,
-    apply_bigrams_rules
+    update_polymers_count,
+    update_bigrams_count
 )
 
 path = "./data/input"
@@ -18,8 +18,8 @@ polymers = count_polymers(template)
 bigrams = count_bigrams(template)
 
 for i in range(10):
-    polymers = apply_polymers_rules(polymers, bigrams, polymers_rules)
-    bigrams = apply_bigrams_rules(bigrams, bigrams_rules)
+    polymers = update_polymers_count(polymers, bigrams, polymers_rules)
+    bigrams = update_bigrams_count(bigrams, bigrams_rules)
 
 difference = max(polymers.values()) - min(polymers.values())
 
