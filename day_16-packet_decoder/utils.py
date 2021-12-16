@@ -30,29 +30,22 @@ def hex_to_bin(h:str) -> str:
         converted+=_hex_char_to_bin(hc)
     return converted
 
+def _next_multiple_4(x):
+    return 4*(x//4 + 1) if x % 4 else x
+
 def _version(chunk):
     return int(chunk[:3],2)
 
 def _type_id(chunk):
     return int(chunk[3:6],2)
 
+def _length_type_id(chunk):
+    return int(chunk[6],2)
 
-def get_chunks(message):
-    while message: 
-        print("message:", message)
-        type_id = int(message[3:6],2)
-        if type_id == 4:
-            chunk = message[:24]
-            message = message[24:]
-            yield chunk
-        else:
-            print("in else")
-            message = message[24:]
 
-def literal_operator(chunk):
-    assert len(chunk) % 4 == 0 
-    version = _version(chunk)
-    type_id = _type_id(chunk)
+def literal_operator(string):
+    version = _version(string)
+    type_id = _type_id(string)
 
     digits = []
 
@@ -60,21 +53,40 @@ def literal_operator(chunk):
     i = 0
     while not last_digit:
         left, right = 6+5*i, 6+5*(i+1)
-        bd = chunk[left:right]
+        bd = string[left:right]
         digits.append(bd[1:])
         last_digit = bd[0] == '0'
         i+=1
-    print(6+5*i)
+    current_idx = 6 + 5*i
+    nx4 = _next_multiple_4(current_idx)
+    pad = string[current_idx:nx4]
 
     value = int("".join(digits),2)
+    
 
     return {
         "version": version,
         "type_id": type_id,
-        "value": value
+        "value": value,
+        "pad": pad,
+        "current_idx": nx4
     }
 
+def other_operator(message):
+    version = _version(message)
+    type_id = _type_id(message)
+    length_type_id = _length_type_id(message)
+    bits_length = 15 if length_type_id == 0 else 11
+    idx = 6+ bits_length
+    length = int(message[6:idx])
 
+
+    return {
+        "version": version,
+        "type_id": type_id,
+        "value": value,
+        "current_idx": idx
+    }
 
 
 type_id_to_operator = {
