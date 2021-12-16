@@ -7,10 +7,10 @@ Challenge: https://adventofcode.com/2021/day/16
 Part 1:
 
 ```python
-python part_1.py
+# python part_1.py
 ```
 
 Part 2: 
 ```python
-python part_2.py
+# python part_2.py
 ```
