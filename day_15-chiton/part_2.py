@@ -1,3 +1,4 @@
+from numpy.core.fromnumeric import size
 import utils as u
 import numpy as np
 
@@ -19,6 +20,22 @@ s = """\
 
 #cave = np.array([[int(x) for x in l] for l in s.splitlines()])
 cave = u.import_data("./data/input")
+
+tile = cave.copy()
+
+nr, nc = cave.shape
+
+for i in range(1,5):
+  tile = tile+1
+  tile[tile==10]=1
+  cave = np.concatenate([cave, tile], axis=1)
+
+tile = cave.copy()
+nr, nc = cave.shape
+for i in range(1,5):
+  tile = tile+1
+  tile[tile>9]=1
+  cave = np.concatenate([cave, tile], axis=0)
 
 
 neighbors = lambda pos: u.get_adjacent_coordinates(cave, pos[0], pos[1])
@@ -45,8 +62,8 @@ queue = [(costs[start_point], start_point)]
 
 while queue:
     current_cost , current_node = hq.heappop(queue)
-    if current_node in visited:
-        continue
+    #if current_node in visited:
+    #    continue
 
     for neigh,d in graph[current_node]:
         if neigh not in visited:
