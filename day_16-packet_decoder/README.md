@@ -4,6 +4,8 @@ Challenge: https://adventofcode.com/2021/day/16
 
 ## Instructions
 
+** NOT DONE **
+
 Part 1:
 
 ```python
