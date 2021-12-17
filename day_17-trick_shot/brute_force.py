@@ -53,28 +53,8 @@ def step(pos, v):
     return [(pos[0] + v[0], pos[1] + v[1]), (update_vx(v[0]), update_vy(v[1]))]
 
 
-def horizontal_stop_time(initial_velocity):
-    return abs(initial_velocity[0])
-
-
-def max_horizontal_position(initial_velocity):
-    x0 = initial_velocity[0]
-    return x0*(x0+1)//2
-
-
 def max_height(initial_velocity):
     return initial_velocity[1]*(initial_velocity[1]+1)//2 if initial_velocity[1] else 0
-
-
-def max_height_first_time(initial_velocity):
-    initial_vertical_velocity = initial_velocity[1]
-    return initial_vertical_velocity if initial_vertical_velocity > 0 else 0
-
-
-def descent_start_time(initial_velocity):
-    y0 = initial_velocity[1]
-    return 0 if y0 < 0 else max_height_first_time(initial_velocity) + 1
-
 
 def in_target(pos):
     return  TARGET_X_MIN <= pos[0] <= TARGET_MAX_X and TARGET_Y_MIN <= pos[1] <= TARGET_Y_MAX
@@ -86,9 +66,7 @@ def past_target(pos):
 
 
 n_valid = 0
-
 m_h = 0
-
 for vx0 in range(TARGET_MAX_X+1): # negative can never reach target
     for vy0 in range(TARGET_Y_MIN,-TARGET_Y_MIN):
         initial_velocity = (vx0, vy0)
