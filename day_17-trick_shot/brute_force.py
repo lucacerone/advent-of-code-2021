@@ -23,7 +23,7 @@ To land the target we must have Txmin <= MaxX <= Txmax
 MaxY position = Vy_0 * (Vy_0 + 1)/2
 MaxY position reached after Vy_0 steps. At Vy+1 probe has the same height
 
-Descent starts at ()
+Descent starts at t = Vy_0 + 1
 
 """
 
