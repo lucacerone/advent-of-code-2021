@@ -1,3 +1,6 @@
+from typing import no_type_check
+
+
 Txmin, Txmax = 48, 70
 Tymin, Tymax = -189, -148
 
@@ -82,11 +85,12 @@ def past_target(pos):
 
 
 
-valid_initial_positions = []
+n_valid = 0
 
 m_h = 0
-for vx0 in range(TARGET_MAX_X+1):
-    for vy0 in range(TARGET_Y_MIN, -TARGET_Y_MIN):
+
+for vx0 in range(TARGET_MAX_X+1): # negative can never reach target
+    for vy0 in range(TARGET_Y_MIN,-TARGET_Y_MIN):
         initial_velocity = (vx0, vy0)
         pos, velocity = (0,0), initial_velocity
         keep_going = True
@@ -95,7 +99,7 @@ for vx0 in range(TARGET_MAX_X+1):
 
             if in_target(pos):
                 m_h = max(m_h, max_height(initial_velocity))
-                valid_initial_positions.append((initial_velocity))
+                n_valid +=1
                 keep_going = False
             elif past_target(pos):
                 keep_going = False
@@ -103,4 +107,4 @@ for vx0 in range(TARGET_MAX_X+1):
                 pass
 
 print(f"Part 1: max height = {m_h}")
-print(f"Part 2: n_trajectories = {len(valid_initial_positions)}")
+print(f"Part 2: n_trajectories = {n_valid}")
