@@ -31,8 +31,6 @@ Descent starts at ()
 TARGET_X_MIN, TARGET_MAX_X = 48, 70
 TARGET_Y_MIN, TARGET_Y_MAX = -189, -148
 
-# Vx >= 10 #math.ceil((-1 + math.sqrt(1+4*2*48))/2) obtained plugging MaxX formula (Vx0*(Vx0+1)/2 in inequality above) # note, this only works in some circumstances (specifically target being in the 4th quadrant)
-# Vx <= 11 #math.floor((-1 + math.sqrt(1+4*2*70))/2)
 
 def update_vx(vx):
     if vx > 0:
