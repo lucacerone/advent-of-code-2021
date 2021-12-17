@@ -4,13 +4,8 @@ Challenge: https://adventofcode.com/2021/day/17
 
 ## Instructions
 
-Part 1:
+Solved with a brute force attack I don't really like :) 
 
-```python
-# python part_1.py
-```
-
-Part 2: 
-```python
-# python part_2.py
+```bash
+python brute_force.py
 ```
