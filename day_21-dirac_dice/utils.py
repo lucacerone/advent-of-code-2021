@@ -2,14 +2,14 @@ from collections import namedtuple
 
 PlayerState = namedtuple("PlayerState",["position", "score"])
 
-def deterministic_die():
+def deterministic_die(rolls=3):
     values = list(range(1,101))
     i=0
     while True:
-        indices = [idx % 100 for idx in range(i, i+3)]
-        rolls = [values[idx] for idx in indices]
-        i = (i+3) % 100
-        yield rolls
+        indices = [idx % 100 for idx in range(i, i+rolls)]
+        rolled = [values[idx] for idx in indices]
+        i = (i+rolls) % 100
+        yield rolled
         
 def update_player_state(player, rolled):
     steps = sum(rolled)
