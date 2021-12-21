@@ -7,6 +7,11 @@ class SnailfishNumber:
         self._right = right
         self.reduce()
 
+    @classmethod
+    def from_list(cls, l) -> "SnailfishNumber":
+        assert len(l) == 2
+        return cls(l[0],l[1])
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self._left}, {self._right})"
     
@@ -17,17 +22,12 @@ class SnailfishNumber:
         return SnailfishNumber([self._left, self._right], [other._left, other._right])
 
     def explode(self):
-        try:
-            for i, number in enumerate(self._left):
-                if i < 4:
-                    continue
-                else:
-                    print("To explode:", number)
-                    break
-        except TypeError:
-            print("nothing to be done")
+       if isinstance(self._left, int):
+           return self
+        
+        
     
-    def split():
+    def split(self):
         pass
     
     def reduce(self):
